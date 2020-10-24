@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+.pio
+CMakeListsPrivate.txt
+cmake-build-*/ 
