@@ -16,7 +16,7 @@ if len(sys.argv) != 2:
 
 tty_path = sys.argv[1]
 
-baudrate = 230400
+baudrate = 230400*2
 
 try:
     while True:

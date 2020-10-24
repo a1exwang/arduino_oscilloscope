@@ -37,6 +37,7 @@ int main() {
   int buffer_id = 0;
   std::chrono::high_resolution_clock::time_point last_fps_t;
   uint64_t fps_counter = 0;
+  int batch_size = 128;
   while (true) {
     SDL_PollEvent(&event);
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
@@ -49,9 +50,13 @@ int main() {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     uint8_t last_time = 0, last_value = 0;
 
-    for (int i = 0; i < 128; i++) {
+    for (int i = 0; i < batch_size; i++) {
       int value, t;
       std::cin >> t >> value;
+      if (std::cin.eof()) {
+        exit(0);
+      }
+
 
       int delta_t = (int)t - (int)last_time;
       if (delta_t < 0) {
@@ -87,10 +92,10 @@ int main() {
     fps_counter++;
     auto fps_t = std::chrono::high_resolution_clock::now();
     if (fps_t - last_fps_t > std::chrono::seconds(1)) {
+      auto fps = fps_counter / std::chrono::duration<float>(fps_t - last_fps_t).count();
+      auto sample_rate_khz = fps * batch_size / 1000.0;
       std::stringstream ss;
-      ss << int(fps_counter /
-                std::chrono::duration<float>(fps_t - last_fps_t).count())
-         << " FPS";
+      ss << "FPS " << fps << ", sample rate " << sample_rate_khz << " kHz";
       SDL_SetWindowTitle(window, ss.str().c_str());
       last_fps_t = fps_t;
       fps_counter = 0;

@@ -29,3 +29,8 @@ Convert a $20 Arduino to a $200 Oscilloscope.
 - `python3 osc-serial.py /dev/ttyACM0 | ./osc-sdl`
 - Probe something that you are curious at with the two wire
 
+# Notes
+
+- The title bar of the oscilloscope application will display current FPS and sample rate
+- You can change ADCSRA bitmap in main.cpp to balance between measurement error and sample rate, currently we can measure at 16kHz and bit depth 8
+
